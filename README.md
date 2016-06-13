@@ -14,7 +14,7 @@ Quick and dirty heatmap of your Mondo transactions.
 ## Steps
 
 1. Clone this repository.
-1. Login to developers.getmondo.co.uk and get your account ID and access token.
+1. Login to https://developers.getmondo.co.uk and get your account ID and access token.
 1. Edit start.sh and enter your account ID and access token.
 1. Edit index.html and enter your Google Maps API key into line 89.
 1. Run start.sh
