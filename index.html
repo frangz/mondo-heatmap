@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0" />
+    <style type="text/css">
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        height: 100%;
+      }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+  </head>
+  <body id="map-container">
+    <div id="map"></div>
+    <script type="text/javascript">
+
+// [START script-body]
+      var map;
+
+      function init() {
+        $.getJSON('heatmap.json', function(data) {
+          initMap(data);
+        });
+      }
+
+      function initMap(heatMapData) {
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: { lat: 51.51, lng: -0.13 },
+          zoom: 13
+        });
+
+        for (var i = heatMapData.length - 1; i >= 0; i--) {
+          var item = heatMapData[i];
+          item.location = new google.maps.LatLng(item.lat, item.lon);
+          item.weight =  item.weight * -1;
+        }
+
+        var heatmap1 = new google.maps.visualization.HeatmapLayer({
+          data: heatMapData.filter(function(item) {return item.category == 'eating_out'})
+        });
+        heatmap1.setMap(map);
+        heatmap1.set('radius', 30);
+        var gradient = [
+          'rgba(255, 255, 255, 0)',
+          'rgba(250, 0, 0, 1)',
+          'rgba(255, 0, 0, 1)',
+          'rgba(255, 0, 0, 1)',
+          'rgba(255, 0, 0, 1)'
+        ]
+        heatmap1.set('gradient', gradient);
+
+        var heatmap2 = new google.maps.visualization.HeatmapLayer({
+          data: heatMapData.filter(function(item) {return item.category == 'entertainment'})
+        });
+        heatmap2.setMap(map);
+        heatmap2.set('radius', 30);
+        var gradient = [
+          'rgba(255, 255, 255, 0)',
+          'rgba(0, 255, 0, 1)',
+          'rgba(0, 255, 0, 1)',
+          'rgba(0, 255, 0, 1)',
+          'rgba(0, 255, 0, 1)'
+        ]
+        heatmap2.set('gradient', gradient);
+
+      var heatmap3 = new google.maps.visualization.HeatmapLayer({
+          data: heatMapData.filter(function(item) {return item.category == 'groceries'})
+        });
+        heatmap3.setMap(map);
+        heatmap3.set('radius', 30);
+        var gradient = [
+          'rgba(255, 255, 255, 0)',
+          'rgba(0, 0, 255, 1)',
+          'rgba(0, 0, 255, 1)',
+          'rgba(0, 0, 255, 1)',
+          'rgba(0, 0, 255, 1)'
+        ]
+        heatmap3.set('gradient', gradient);
+      };
+// [END script-body]
+
+    </script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=visualization&callback=init"></script>
+  </body>
+</html>
